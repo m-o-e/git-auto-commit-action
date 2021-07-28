@@ -94,7 +94,7 @@ _tag_commit() {
     if [ -n "$INPUT_TAGGING_MESSAGE" ]
     then
         echo "::debug::Create tag $INPUT_TAGGING_MESSAGE";
-        git -c user.name="$INPUT_COMMIT_USER_NAME" -c user.email="$INPUT_COMMIT_USER_EMAIL" tag -a "$INPUT_TAGGING_MESSAGE" -m "$INPUT_TAGGING_MESSAGE";
+        git -c user.name="$INPUT_COMMIT_USER_NAME" -c user.email="$INPUT_COMMIT_USER_EMAIL" tag -fa "$INPUT_TAGGING_MESSAGE" -m "$INPUT_TAGGING_MESSAGE";
     else
         echo "No tagging message supplied. No tag will be added.";
     fi
@@ -115,6 +115,7 @@ _push_to_github() {
         then
             echo "::debug::git push origin --tags";
             git push origin --follow-tags --atomic ${INPUT_PUSH_OPTIONS:+"${INPUT_PUSH_OPTIONS_ARRAY[@]}"};
+            git push origin -f --tags
         else
             echo "::debug::git push origin";
             git push origin ${INPUT_PUSH_OPTIONS:+"${INPUT_PUSH_OPTIONS_ARRAY[@]}"};
